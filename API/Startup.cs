@@ -1,6 +1,10 @@
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
+using MediatR;
+using Application.Activities;
+using Application.Core;
+using API.Extentions;
 
 namespace API
 {
@@ -18,20 +22,7 @@ namespace API
         {
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPIv5", Version = "v1" });
-            });
-            services.AddDbContext<DataContext>(opt => {
-                opt.UseSqlite(_config.GetConnectionString("DefaultConnection"));
-            });
-            services.AddCors(opt => {
-                opt.AddPolicy("CorsPolicy", policy => {
-                    //policy.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
-                    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
-                });
-            });
-            
+            services.AddApplicationServices(_config);
             
         }
 
